@@ -1,0 +1,155 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+}
+header{
+    background-color: #222;
+    color:#fff;
+    padding: 26px;
+    text-align: center;
+    font-size: 20px;
+}
+footer {
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+    padding: 4px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 12px;
+}
+main {
+    display: flex;
+    min-height: 70vh;
+    padding: 24px;  
+    width: 100%;
+
+}
+.intro {
+    margin-bottom: 24px;
+    text-align: center;
+    font-weight: 700;   
+}
+.mapa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mapas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 2;
+    transition: transform 1s ease-in-out;
+}
+main.ativo .mapas {
+    transform: translateX(-130px);
+}
+.mapas svg {
+    max-width: 900px;
+    height: auto;   
+}
+svg path {
+    fill: #6f9c76;
+    stroke: #ffffff;
+    stroke-width: 0.5;
+    transition: fill 0.3s ease;
+}
+svg path:hover {
+    cursor: pointer;
+}
+
+svg {
+    user-select: none;
+}
+
+.info {
+    flex: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 24px;
+    transition: flex 0.8s ease, opacity 0.7s ease;
+}
+main.ativo .info {
+    flex: 1;
+    opacity: 1;
+}
+.info h2 {
+    font-size: 34px;
+    margin-bottom: 16px;
+}
+.info p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+#voltar {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #222;
+    color: #fff;
+    border: solid 2px white;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 12px;
+}
+#voltar:hover {
+    background-color: #5e615ee1;
+    
+}
+main.ativo #voltar {
+    display: block;
+}
+/* SUDESTE */
+#BRSP:hover,
+#BRRJ:hover,
+#BRMG:hover,
+#BRES:hover {
+    fill: #FF8C00;
+    cursor: pointer;
+}
+/* SUL */
+#BRPR:hover,
+#BRRS:hover,
+#BRSC:hover {
+    fill: #FF0000;
+    cursor: pointer;
+}
+/* CENTRO-OESTE */
+#BRMS:hover,
+#BRMT:hover,
+#BRGO:hover,
+#BRDF:hover {
+    fill: #FFFF00;
+    cursor: pointer;
+}
+/* NORTE */
+#BRAM:hover,
+#BRRO:hover,
+#BRRR:hover,
+#BRAC:hover,
+#BRPA:hover,
+#BRAP:hover,
+#BRTO:hover {
+    fill: #228B22;
+    cursor: pointer;
+}
+/* NORDESTE */
+#BRBA:hover,
+#BRSE:hover,
+#BRAL:hover,
+#BRPE:hover,
+#BRPB:hover,
+#BRRN:hover,
+#BRCE:hover,
+#BRMA:hover,
+#BRPI:hover {
+    fill: #191970;
+    cursor: pointer;
+}
+    
