@@ -49,6 +49,7 @@ main {
 }
 main.ativo .mapas {
     transform: translateX(-130px);
+    
 }
 .mapas svg {
     max-width: 900px;
@@ -59,8 +60,6 @@ svg path {
     stroke: #ffffff;
     stroke-width: 0.5;
     transition: fill 0.3s ease;
-}
-svg path:hover {
     cursor: pointer;
 }
 
@@ -105,51 +104,9 @@ main.ativo .info {
 main.ativo #voltar {
     display: block;
 }
-/* SUDESTE */
-#BRSP:hover,
-#BRRJ:hover,
-#BRMG:hover,
-#BRES:hover {
-    fill: #FF8C00;
-    cursor: pointer;
-}
-/* SUL */
-#BRPR:hover,
-#BRRS:hover,
-#BRSC:hover {
-    fill: #FF0000;
-    cursor: pointer;
-}
-/* CENTRO-OESTE */
-#BRMS:hover,
-#BRMT:hover,
-#BRGO:hover,
-#BRDF:hover {
-    fill: #FFFF00;
-    cursor: pointer;
-}
-/* NORTE */
-#BRAM:hover,
-#BRRO:hover,
-#BRRR:hover,
-#BRAC:hover,
-#BRPA:hover,
-#BRAP:hover,
-#BRTO:hover {
-    fill: #228B22;
-    cursor: pointer;
-}
-/* NORDESTE */
-#BRBA:hover,
-#BRSE:hover,
-#BRAL:hover,
-#BRPE:hover,
-#BRPB:hover,
-#BRRN:hover,
-#BRCE:hover,
-#BRMA:hover,
-#BRPI:hover {
-    fill: #191970;
-    cursor: pointer;
-}
-    
+
+.regiao-sul:hover{ fill: #ff0000; }
+.regiao-sudeste:hover{ fill: #ff8c00; }
+.regiao-centro:hover{fill: #c9b800;}
+.regiao-norte:hover{ fill: #228B22; }
+.regiao-nordeste:hover{ fill: #4444bb; }
