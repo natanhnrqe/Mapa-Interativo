@@ -2,11 +2,13 @@ const app = {
     estadoAtivo: null,
 };
 
-const svg = document.querySelector("svg");
-const main = document.querySelector("main");
-const estadosSvg = document.querySelectorAll("svg path");
 const painelInfo = document.getElementById("conteudo-info");
 const botaoVoltar = document.getElementById("voltar");
+const main = document.querySelector("main");
+
+let svg = null;
+
+// dadosEstados vem do dados.js
 
 function getEstadoById(id) {
     return dadosEstados[id] ?? null;
@@ -21,74 +23,75 @@ function renderizarPainelInfo(estado) {
     `;
 }
 
-function focarEstado(elementoSvg) {
-    const box = elementoSvg.getBBox();
-    const padding = 5;
+function animarViewBox(svgEl, alvo, duracao = 600) {
+    const vb = svgEl.viewBox.baseVal;
+    const inicio = { x: vb.x, y: vb.y, w: vb.width, h: vb.height };
+    const startTime = performance.now();
 
-    const alvo = {
-         x: box.x - padding,
-         y: box.y - padding,
-         w: box.width + 2 * padding,
-         h: box.height + 2 * padding
+    function frame(agora) {
+        const t = Math.min((agora - startTime) / duracao, 1);
+        const progresso = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+        svgEl.setAttribute("viewBox",
+            `${inicio.x + (alvo.x - inicio.x) * progresso} ` +
+            `${inicio.y + (alvo.y - inicio.y) * progresso} ` +
+            `${inicio.w + (alvo.w - inicio.w) * progresso} ` +
+            `${inicio.h + (alvo.h - inicio.h) * progresso}`
+        );
+
+        if (progresso < 1) requestAnimationFrame(frame);
     }
-    animarViewBox(svg, alvo);
+    requestAnimationFrame(frame);
 }
 
-function selecionarEstado(elementoSvg){
-    const estado =  getEstadoById(elementoSvg.id);
+function focarEstado(grupoSvg) {
 
-    if (!estado){
-        painelInfo.innerHTML = "<p>Estado nao encontrado!!</p>"
+    requestAnimationFrame(() => {
+    const box = grupoSvg.getBBox();
+    const padding = 5;
+    animarViewBox(svg, {
+        x: box.x - padding,
+        y: box.y - padding,
+        w: box.width + 2 * padding,
+        h: box.height + 2 * padding
+    });
+    });
+}
+
+function selecionarEstado(grupoSvg) {
+    const estado = getEstadoById(grupoSvg.id);
+
+    if (!estado) {
+        painelInfo.innerHTML = "<p>Estado não encontrado!</p>";
         return;
     }
 
-    app.estadoAtivo = elementoSvg.id;
-
+    app.estadoAtivo = grupoSvg.id;
     renderizarPainelInfo(estado);
-    focarEstado(elementoSvg);
-
+    focarEstado(grupoSvg);
     main.classList.add("ativo");
 }
 
 function resetMapa() {
-    svg.setAttribute("viewBox", "0 0 1000 912");
+    if (!svg) return;
+    const vb = svg.viewBox.baseVal;
+    // Usa o viewBox original do SVG carregado
+    animarViewBox(svg, { x: 0, y: 0, w: 612.51611, h: 639.04297 });
     app.estadoAtivo = null;
     main.classList.remove("ativo");
     painelInfo.innerHTML = "<p>Selecione um estado para ver as informações.</p>";
 }
 
-estadosSvg.forEach(estado => {
-    estado.addEventListener("click", () => {
-        if (app.estadoAtivo !== null)return; 
-        selecionarEstado(estado);
-    
-});
-});
+function initMapaEventos() {
+    svg = document.querySelector("svg");
 
-botaoVoltar.addEventListener("click", resetMapa);
-
-function animarViewBox(svgEl, alvo, duracao = 600){
-    const vb = svgEl.viewBox.baseVal;
-    const inicio = { x: vb.x, y: vb.y, w: vb.width, h: vb.height };
-
-    const startTime = performance.now();
-
-    function frame(agora){
-        const t = Math.min((agora - startTime) / duracao, 1);
-        const progresso = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-
-        const x = inicio.x + (alvo.x - inicio.x) * progresso;
-        const y = inicio.y + (alvo.y - inicio.y) * progresso;
-        const w = inicio.w + (alvo.w - inicio.w) * progresso;
-        const h = inicio.h + (alvo.h - inicio.h) * progresso;
-
-        svgEl.setAttribute("viewBox", `${x} ${y} ${w} ${h}`);
-
-        if (progresso < 1 ) requestAnimationFrame(frame);
-        
-    }
-    requestAnimationFrame(frame);
+    const estadosGrupos = document.querySelectorAll('svg g[id^="BR"]');
+    estadosGrupos.forEach(grupo => {
+        grupo.addEventListener("click", () => {
+            if (app.estadoAtivo !== null) return;
+            selecionarEstado(grupo);
+        });
+    });
 }
 
-
-
+botaoVoltar.addEventListener("click", resetMapa);
