@@ -6,6 +6,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f0eb;
+    overflow: hidden;
 }
 header {
     background-color: #1e1e1e;
@@ -60,17 +61,18 @@ footer {
     background-color: #222;
     color: #fff;
     text-align: center;
-    padding: 4px;
+    padding: 1px;
     position: fixed;
     bottom: 0;
     width: 100%;
-    font-size: 12px;
+    font-size: 9px;
 }
 
 main {
+    position: relative;
     display: flex;
-    min-height: 70vh;
-    padding: 24px;  
+    height: calc(100vh - 60px - 12px);
+    overflow: hidden;
     width: 100%;
 
 }
@@ -85,24 +87,28 @@ main {
     justify-content: center;
 }
 .mapas {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 2;
-    transition: transform 0.4s ease-in;
+    
+    transition: transform 0.8s ease-in;
 }
 main.ativo .mapas {
-    transform: translateX(-200px);
+    transform: translateX(-120px);
     
 }
 #mapa-container {
     width: 100%;
-    max-width: 700px;
-    height: 60vh;
+    height: 100%;
 }
-.mapas svg {
-    max-width: 1200px;
-    height: auto;   
+
+#mapa-container svg {
+width: 100%;
+height: 100%;
 }
 svg path {
     fill: #6f9c76;
@@ -113,41 +119,77 @@ svg path {
 }
 
 svg {
-    user-select: none;
+    
+    transition: transform 0.4s ease ;
+}
+svg g {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+svg g path {
+    transition: fill 0.3s ease;
+}
+svg g.inativo {
+    opacity: 0.25;
+}
+svg g.ativo path{
+    fill: #3b82f6;
 }
 
 .info {
-    flex: 0;
-    opacity: 0;
-    overflow: hidden;
-    padding: 0 24px;
-    transition: flex 0.8s ease, opacity 0.7s ease;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    
+
+    width: 420px;
+
+    background: white;
+    border-left: 2px solid #e5e5e5;
+
+    padding: 40px;
+
+    transform: translateX(100%);
+    transition: transform 0.5s ease;
+
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+    
+   
+    display: flex;
+    flex-direction: column;
+
+    z-index: 5;
 }
 main.ativo .info {
-    flex: 1;
-    opacity: 1;
+    transform: translateX(0);
 }
 .info h2 {
-    font-size: 34px;
-    margin-bottom: 16px;
+    font-size: 36px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e5e5e5;
 }
 .info p {
     font-size: 18px;
-    line-height: 1.6;
-    margin-bottom: 12px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+.info strong{
+    color: #111;
 }
 #voltar {
-    padding: 10px 20px;
+    margin-top: auto;
+    padding: 12px 22px;
     font-size: 16px;
-    background-color: #222;
+    background: #1e1e1e;
     color: #fff;
-    border: solid 2px white;
+    border: none;
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 12px;
+    transition: background 0.3s;
 }
 #voltar:hover {
-    background-color: #5e615ee1;
+    background: #444;
     
 }
 main.ativo #voltar {

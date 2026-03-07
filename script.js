@@ -45,15 +45,22 @@ function animarViewBox(svgEl, alvo, duracao = 600) {
 }
 
 function focarEstado(grupoSvg) {
-
     requestAnimationFrame(() => {
     const box = grupoSvg.getBBox();
-    const padding = 5;
+
+    const padding = 60;
+
+    const x = box.x - padding;
+    const y = box.y - padding;
+
+    const w = box.width + padding * 2;
+    const h = box.height + padding * 2;
+
     animarViewBox(svg, {
-        x: box.x - padding,
-        y: box.y - padding,
-        w: box.width + 2 * padding,
-        h: box.height + 2 * padding
+        x: x,
+        y: y,
+        w: w,
+        h: h
     });
     });
 }
@@ -67,6 +74,18 @@ function selecionarEstado(grupoSvg) {
     }
 
     app.estadoAtivo = grupoSvg.id;
+
+    const estados = document.querySelectorAll("svg g[id^='BR']");
+
+    estados.forEach(g =>{
+        if (g === grupoSvg){
+            g.classList.add("ativo");
+        }else {
+            g.classList.add("inativo");
+        }
+
+    });
+
     renderizarPainelInfo(estado);
     focarEstado(grupoSvg);
     main.classList.add("ativo");
@@ -74,11 +93,20 @@ function selecionarEstado(grupoSvg) {
 
 function resetMapa() {
     if (!svg) return;
-    const vb = svg.viewBox.baseVal;
-    // Usa o viewBox original do SVG carregado
+
     animarViewBox(svg, { x: 0, y: 0, w: 612.51611, h: 639.04297 });
+
+    const estados = document.querySelectorAll("svg g[id^='BR']");
+
+    estados.forEach(g => {
+        g.classList.remove("ativo");
+        g.classList.remove("inativo");
+    })
+
     app.estadoAtivo = null;
+
     main.classList.remove("ativo");
+
     painelInfo.innerHTML = "<p>Selecione um estado para ver as informações.</p>";
 }
 
