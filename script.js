@@ -17,9 +17,25 @@ function getEstadoById(id) {
 function renderizarPainelInfo(estado) {
     painelInfo.innerHTML = `
         <h2>${estado.nome}</h2>
-        <p><strong>Região:</strong> ${estado.regiao}</p>
-        <p><strong>Cidades:</strong> ${estado.cidades.join(", ")}</p>
-        <p><strong>Atrações Turísticas:</strong> ${estado.turismo.join(", ")}</p>
+
+        <div class="estados-dados"> 
+
+            <p><strong>Região:</strong> ${estado.regiao}</p>
+
+            <p><strong>Capital:</strong> ${estado.capital ?? "-"}</p>
+
+            <p><strong>População:</strong> ${estado.populacao ?? "-"}</p>
+
+            <p><strong>Área:</strong> ${estado.area ?? "-"}</p>
+
+            <p><strong>PIB:</strong> ${estado.pib ?? "-"}</p>
+
+            <p><strong>Cidades:</strong> ${estado.cidades.join(", ")}</p>
+
+            <p><strong>Atrações Turísticas:</strong> ${estado.turismo.join(", ")}</p>
+
+        </div>
+
     `;
 }
 

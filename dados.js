@@ -2,6 +2,10 @@ const dadosEstados = {
     BRPR: {
         nome: "Paraná",
         regiao: "Sul",
+        capital: "Curitiba",
+        populacao: "11,4 milhões",
+        area: "199.298 km²",
+        pib: "R$ 614 bilhões",
         cidades: ["Curitiba", "Londrina", "Maringá"],
         turismo: ["Parque Barigui", "Jardim Botânico de Curitiba"]
     },

@@ -195,9 +195,82 @@ main.ativo .info {
 main.ativo #voltar {
     display: block;
 }
+.estados-dados{
+    margin-top: 20px;
+}
+.estados-dados p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
 
 .regiao-sul:hover path{ fill: #ff0000; }
 .regiao-sudeste:hover path{ fill: #ff8c00; }
 .regiao-centro:hover path{fill: #ecf00a;}
 .regiao-norte:hover path{ fill: #228B22; }
 .regiao-nordeste:hover path{ fill: #4444bb; }
+
+@media (max-width: 768px){
+
+    main{
+        flex-direction: column;
+    }
+    .mapas{
+        position: absolute;
+        inset: 0;   
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #mapa-container {
+    width: 100%;
+    height: 100%;
+}
+    #mapa-container svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+    svg{
+        display: block;
+        
+    }
+    .info{
+        overflow-y: auto    ;
+
+        width: 100%;
+        height: 45%;
+        padding: 24px;
+
+        top: auto;
+        bottom: 0;
+        right: 0;
+
+        transform: translateY(100%);
+
+        border-left: none;
+        border-top: 2px solid #e5e5e5;
+    }
+    .estados-dados{
+        padding-bottom: 20px;
+    }
+    main.ativo .info{
+        transform:translateY(0);
+
+    }
+    main.ativo .mapas {
+    transform: translateX(0px);
+    transform: translateY(-180px);
+
+}
+    #voltar{
+        display: none;
+        margin-top: auto;
+        font-size: 18px;
+        padding: 14px 24px;
+    }
+
+    main.ativo #voltar{
+        display: block;
+    }
+}
