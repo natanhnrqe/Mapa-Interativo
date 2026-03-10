@@ -15,27 +15,64 @@ function getEstadoById(id) {
 }
 
 function renderizarPainelInfo(estado) {
+
+    // 1. Limpa o painel antes de começar para evitar lixo visual
+    painelInfo.innerHTML = "";
+
+    // 2. Tratamento da Região para o CSS
+    const regiaoClasse = estado.regiao ? estado.regiao.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, '-') : "geral";
+
+    // 3. Construção do HTML com verificação rigorosa das listas
+    const htmlCidades = (estado.cidades && Array.isArray(estado.cidades)) 
+        ? estado.cidades.map(item => `<span class="tag">${item}</span>`).join('') 
+        : '<span class="tag">Dados não disponíveis</span>';
+
+    const htmlTurismo = (estado.turismo && Array.isArray(estado.turismo)) 
+        ? estado.turismo.map(item => `<span class="tag tag-turismo">${item}</span>`).join('') 
+        : '<span class="tag">Dados não disponíveis</span>';
+
+    // 4. Injeção do HTML no painel
     painelInfo.innerHTML = `
-        <h2>${estado.nome}</h2>
-
-        <div class="estados-dados"> 
-
-            <p><strong>Região:</strong> ${estado.regiao}</p>
-
-            <p><strong>Capital:</strong> ${estado.capital ?? "-"}</p>
-
-            <p><strong>População:</strong> ${estado.populacao ?? "-"}</p>
-
-            <p><strong>Área:</strong> ${estado.area ?? "-"}</p>
-
-            <p><strong>PIB:</strong> ${estado.pib ?? "-"}</p>
-
-            <p><strong>Cidades:</strong> ${estado.cidades.join(", ")}</p>
-
-            <p><strong>Atrações Turísticas:</strong> ${estado.turismo.join(", ")}</p>
-
+        <div class="painel-header">
+            <h2>${estado.nome}</h2>
+            <span class="regiao-tag regiao-${regiaoClasse}">${estado.regiao}</span>
         </div>
+        
+        <div class="estados-dados">
+            <div class="meta-row">
+                <div class="meta-item">
+                    <span class="meta-label">Capital</span>
+                    <span class="meta-value">${estado.capital || "---"}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">População</span>
+                    <span class="meta-value">${estado.populacao || "---"}</span>
+                </div>
+            </div>
 
+            <div class="meta-row">
+                <div class="meta-item">
+                    <span class="meta-label">Área</span>
+                    <span class="meta-value">${estado.area || "---"}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">PIB</span>
+                    <span class="meta-value">${estado.pib || "---"}</span>
+                </div>
+            </div>
+
+            <div class="lista-secao">
+                <h3>Principais Cidades</h3>
+                <div class="tag-container">${htmlCidades}</div>
+            </div>
+
+            <div class="lista-secao secao-turismo">
+                <h3>Atrações Turísticas</h3>
+                <div class="tag-container">${htmlTurismo}</div>
+            </div>
+        </div>
     `;
 }
 
@@ -120,10 +157,9 @@ function resetMapa() {
     })
 
     app.estadoAtivo = null;
-
     main.classList.remove("ativo");
 
-    painelInfo.innerHTML = "<p>Selecione um estado para ver as informações.</p>";
+    painelInfo.innerHTML = "";
 }
 
 function initMapaEventos() {

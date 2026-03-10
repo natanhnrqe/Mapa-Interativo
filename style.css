@@ -131,47 +131,148 @@ svg g.ativo path {
 }
 
 .info {
-  will-change: transform;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  content-visibility: auto;
-
-  width: 420px;
-
-  background: white;
-  border-left: 2px solid #e5e5e5;
-
-  padding: 40px;
-
-  transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
-
-  display: flex;
-  flex-direction: column;
-
-  z-index: 5;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 420px;
+    background: #ffffff;
+    padding: 32px; /* Aumentamos o respiro interno */
+    box-shadow: -5px 0 25px rgba(0,0,0,0.05); /* Sombra suave para separar do mapa */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaço automático entre os blocos principais */
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10;
+    overflow-y: auto; /* Permite rolar se a lista de cidades for longa */
 }
+
 main.ativo .info {
   transform: translateX(0);
+  visibility: visible;
 }
-.info h2 {
-  font-size: 36px;
+
+
+.painel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #e5e5e5;
+  
 }
-.info p {
+
+.painel-header h2 {
+  font-size: 32px;
+  margin: 0;
+  border-bottom: none;
+  color: #1a1d24;
+  line-height: 1.2;
+}
+
+.regiao-tag {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #1a1d24;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.regiao-sul{ background-color: #ffcccc; border-color: #ff9999;}
+.regiao-sudeste{ background-color: #ffead1; border-color: #ffcc99;}
+.regiao-centro{ background-color: #fdfdde; border-color: #f1f1a1;}
+.regiao-norte{ background-color: #d1ead1; border-color: #a1daa1;}
+.regiao-nordeste{ background-color: #d6d6f5; border-color: #a1a1e1;}
+
+.estados-dados {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.meta-item {
+ 
+  background-color: #f3f4f6;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.meta-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #6b7280;
+  letter-spacing: 0.05rem;
+  margin-bottom: 4px;
+}
+
+.meta-value {
   font-size: 18px;
-  line-height: 1.7;
-  margin-bottom: 14px;
+  font-weight: 700;
+  color: #111827;
 }
-.info strong {
-  color: #111;
+
+.lista-secao h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 10px;
+  margin-top: 8px;
 }
+
+.secao-turismo {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag {
+  font-size: 14px;
+  color: #1a1d24;
+  background-color: #eee;
+  padding: 6px 12px;
+  border-radius: 100px;
+  border: 1px solid #ddd;
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+.tag-turismo {
+  background-color: #ffead1;
+  color: #b33939;
+  border-color: #ffcc99;
+}
+
+.tag-turismo:hover {
+  background-color: #ffe0b3;
+}
+
+
+
 #voltar {
 
+  display: none;
+  margin-top: auto;
   background-color: #ff4757;
     color: white;
     font-size: 1.2rem;
@@ -198,7 +299,7 @@ main.ativo .info {
     transform: translate(0,0);
 }
 #voltar:hover {
-  /* background-color: #ff6b81;  */
+  background-color: #ff6b81;  
     
     transform: translate(3px, 3px);
    
