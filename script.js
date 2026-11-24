@@ -1,177 +1,36 @@
-const app = {
-    estadoAtivo: null,
-};
+(() => {
+  const panel = document.getElementById('conteudo-info');
+  const title = document.getElementById('state-title');
+  const placeholder = document.getElementById('state-placeholder');
+  const select = document.getElementById('estado-select');
+  const list = document.getElementById('lista-estados');
+  const host = document.getElementById('mapa-container');
+  const pratos = { BRAC:'Tacacá', BRAL:'Sururu', BRAP:'Camarão no bafo', BRAM:'Tambaqui assado', BRBA:'Acarajé', BRCE:'Baião de dois', BRES:'Moqueca capixaba', BRGO:'Empadão goiano', BRMA:'Arroz de cuxá', BRMT:'Maria-isabel', BRMS:'Sopa paraguaia', BRMG:'Pão de queijo', BRPA:'Açaí', BRPB:'Baião de dois', BRPE:'Bolo de rolo', BRPI:'Cajuína', BRPR:'Barreado', BRRJ:'Feijoada', BRRN:'Ginga com tapioca', BRRS:'Churrasco', BRRO:'Pirarucu', BRRR:'Damurida', BRSC:'Sequência de camarão', BRSP:'Virado à paulista', BRSE:'Caranguejada', BRTO:'Peixe na telha', BRDF:'Galinhada' };
 
-const painelInfo = document.getElementById("conteudo-info");
-const botaoVoltar = document.getElementById("voltar");
-const main = document.querySelector("main");
-
-let svg = null;
-
-// dadosEstados vem do dados.js
-
-function getEstadoById(id) {
-    return dadosEstados[id] ?? null;
-}
-
-function renderizarPainelInfo(estado) {
-
-    // 1. Limpa o painel antes de começar para evitar lixo visual
-    painelInfo.innerHTML = "";
-
-    // 2. Tratamento da Região para o CSS
-    const regiaoClasse = estado.regiao ? estado.regiao.toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/\s+/g, '-') : "geral";
-
-    // 3. Construção do HTML com verificação rigorosa das listas
-    const htmlCidades = (estado.cidades && Array.isArray(estado.cidades)) 
-        ? estado.cidades.map(item => `<span class="tag">${item}</span>`).join('') 
-        : '<span class="tag">Dados não disponíveis</span>';
-
-    const htmlTurismo = (estado.turismo && Array.isArray(estado.turismo)) 
-        ? estado.turismo.map(item => `<span class="tag tag-turismo">${item}</span>`).join('') 
-        : '<span class="tag">Dados não disponíveis</span>';
-
-    // 4. Injeção do HTML no painel
-    painelInfo.innerHTML = `
-        <div class="painel-header">
-            <h2>${estado.nome}</h2>
-            <span class="regiao-tag regiao-${regiaoClasse}">${estado.regiao}</span>
-        </div>
-        
-        <div class="estados-dados">
-            <div class="meta-row">
-                <div class="meta-item">
-                    <span class="meta-label">Capital</span>
-                    <span class="meta-value">${estado.capital || "---"}</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">População</span>
-                    <span class="meta-value">${estado.populacao || "---"}</span>
-                </div>
-            </div>
-
-            <div class="meta-row">
-                <div class="meta-item">
-                    <span class="meta-label">Área</span>
-                    <span class="meta-value">${estado.area || "---"}</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">PIB</span>
-                    <span class="meta-value">${estado.pib || "---"}</span>
-                </div>
-            </div>
-
-            <div class="lista-secao">
-                <h3>Principais Cidades</h3>
-                <div class="tag-container">${htmlCidades}</div>
-            </div>
-
-            <div class="lista-secao secao-turismo">
-                <h3>Atrações Turísticas</h3>
-                <div class="tag-container">${htmlTurismo}</div>
-            </div>
-        </div>
-    `;
-}
-
-function animarViewBox(svgEl, alvo, duracao = 600) {
-    const vb = svgEl.viewBox.baseVal;
-    const inicio = { x: vb.x, y: vb.y, w: vb.width, h: vb.height };
-    const startTime = performance.now();
-
-    function frame(agora) {
-        const t = Math.min((agora - startTime) / duracao, 1);
-        const progresso = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-
-        svgEl.setAttribute("viewBox",
-            `${inicio.x + (alvo.x - inicio.x) * progresso} ` +
-            `${inicio.y + (alvo.y - inicio.y) * progresso} ` +
-            `${inicio.w + (alvo.w - inicio.w) * progresso} ` +
-            `${inicio.h + (alvo.h - inicio.h) * progresso}`
-        );
-
-        if (progresso < 1) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-}
-
-function focarEstado(grupoSvg) {
-    requestAnimationFrame(() => {
-    const box = grupoSvg.getBBox();
-
-    const padding = 60;
-
-    const x = box.x - padding;
-    const y = box.y - padding;
-
-    const w = box.width + padding * 2;
-    const h = box.height + padding * 2;
-
-    animarViewBox(svg, {
-        x: x,
-        y: y,
-        w: w,
-        h: h
-    });
-    });
-}
-
-function selecionarEstado(grupoSvg) {
-    const estado = getEstadoById(grupoSvg.id);
-
-    if (!estado) {
-        painelInfo.innerHTML = "<p>Estado não encontrado!</p>";
-        return;
-    }
-
-    app.estadoAtivo = grupoSvg.id;
-
-    const estados = document.querySelectorAll("svg g[id^='BR']");
-
-    estados.forEach(g =>{
-        if (g === grupoSvg){
-            g.classList.add("ativo");
-        }else {
-            g.classList.add("inativo");
-        }
-
-    });
-
-    renderizarPainelInfo(estado);
-    focarEstado(grupoSvg);
-    main.classList.add("ativo");
-}
-
-function resetMapa() {
-    if (!svg) return;
-
-    animarViewBox(svg, { x: 0, y: 0, w: 612.51611, h: 639.04297 });
-
-    const estados = document.querySelectorAll("svg g[id^='BR']");
-
-    estados.forEach(g => {
-        g.classList.remove("ativo");
-        g.classList.remove("inativo");
-    })
-
-    app.estadoAtivo = null;
-    main.classList.remove("ativo");
-
-    painelInfo.innerHTML = "";
-}
-
-function initMapaEventos() {
-    svg = document.querySelector("svg");
-
-    const estadosGrupos = document.querySelectorAll('svg g[id^="BR"]');
-    estadosGrupos.forEach(grupo => {
-        grupo.addEventListener("click", () => {
-            if (app.estadoAtivo !== null) return;
-            selecionarEstado(grupo);
-        });
-    });
-}
-
-botaoVoltar.addEventListener("click", resetMapa);
+  function addOption(id, state) {
+    if (select.querySelector(`option[value="${id}"]`)) return;
+    const opt = document.createElement('option'); opt.value = id; opt.textContent = state.nome; select.append(opt);
+    const li = document.createElement('li'); const btn = document.createElement('button'); btn.type = 'button'; btn.textContent = state.nome; btn.addEventListener('click', () => show(id)); li.append(btn); list.append(li);
+  }
+  function show(id) {
+    const state = dadosEstados[id]; if (!state) return;
+    title.textContent = state.nome; placeholder.hidden = true; select.value = id;
+    panel.replaceChildren();
+    const intro = document.createElement('p'); intro.textContent = `${state.regiao} · Capital: ${state.capital}`; panel.append(intro);
+    const dl = document.createElement('dl'); dl.className = 'facts';
+    [['População (Censo 2022)', state.populacao], ['Área', state.area], ['Comida típica', pratos[id] || 'Consulte referências culturais locais']].forEach(([label, value]) => { const wrap = document.createElement('div'); const dt = document.createElement('dt'); dt.textContent = label; const dd = document.createElement('dd'); dd.textContent = value || 'Não informado'; wrap.append(dt, dd); dl.append(wrap); }); panel.append(dl);
+    const cities = document.createElement('h3'); cities.textContent = 'Cidades em destaque'; panel.append(cities); panel.append(makeList(state.cidades));
+    const tourism = document.createElement('h3'); tourism.textContent = 'Atrações'; panel.append(tourism); panel.append(makeList(state.turismo));
+    const source = document.createElement('p'); source.className = 'source-note'; source.textContent = 'População: IBGE, Censo Demográfico 2022. Gastronomia e turismo são referências culturais gerais.'; panel.append(source);
+  }
+  function makeList(values=[]) { const ul=document.createElement('ul'); ul.className='chip-list'; values.forEach(value=>{const li=document.createElement('li');li.textContent=value;ul.append(li)}); return ul; }
+  Object.entries(dadosEstados).forEach(([id,state]) => addOption(id,state));
+  select.addEventListener('change', () => { if (select.value) show(select.value); });
+  fetch('mapa.svg').then(response => { if(!response.ok) throw new Error(); return response.text(); }).then(markup => {
+    host.innerHTML = markup; const svg=host.querySelector('svg'); if(!svg) throw new Error();
+    svg.setAttribute('role','group'); svg.setAttribute('aria-labelledby','map-title map-desc');
+    const ns='http://www.w3.org/2000/svg'; const st=document.createElementNS(ns,'title'); st.id='map-title'; st.textContent='Mapa do Brasil por estado'; const desc=document.createElementNS(ns,'desc'); desc.id='map-desc'; desc.textContent='Use Tab para percorrer os estados e Enter ou Espaço para consultar um.'; svg.prepend(desc); svg.prepend(st);
+    Object.entries(dadosEstados).forEach(([id,state]) => { const group=svg.querySelector(`#${id}`); if(!group)return; group.setAttribute('tabindex','0'); group.setAttribute('role','button'); group.setAttribute('aria-label',`${state.nome}, ${state.regiao}`); group.addEventListener('click',()=>show(id)); group.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();show(id)}}); });
+    host.setAttribute('aria-busy','false');
+  }).catch(() => { host.setAttribute('aria-busy','false'); host.innerHTML='<p>O mapa não carregou. Use a lista de estados para consultar as informações.</p>'; });
+})();

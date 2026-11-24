@@ -1,77 +1,26 @@
-# 🗺️ Mapa Interativo do Brasil
+# Brasil em foco — mapa interativo acessível
 
-Projeto inicial de um mapa interativo do Brasil utilizando **SVG**, com foco em interações via **JavaScript (Vanilla)** e estilos dinâmicos com **CSS**.
+Site educativo em HTML, CSS e JavaScript sobre estados brasileiros e acessibilidade na vida cotidiana. O projeto tem cinco páginas conectadas: mapa, acessibilidade no cotidiano, acessibilidade na web, mobilidade e comunicação.
 
-Atualmente o projeto:
-- dá **zoom ao clicar** em um estado
-- **muda a cor no hover** (passar o mouse)
-- **transition ** o mapa para o lado (click mouse)
----
+## Executar localmente
 
-## 📌 Sobre o Projeto
+Como o mapa SVG é carregado com `fetch`, abra o projeto por um servidor HTTP local (por exemplo, a extensão Live Server do VS Code). Abrir `index.html` diretamente como arquivo pode impedir o carregamento do mapa.
 
-Este projeto tem como objetivo construir uma base para um mapa interativo nacional, permitindo:
+## Publicar
 
-- Interação direta com estados do SVG
-- Feedback visual com hover
-- Zoom por estado (clique)
-- Evolução futura para exibição de informações e filtros
+O site é estático. Pode ser hospedado gratuitamente no GitHub Pages: envie os arquivos para um repositório GitHub, abra **Settings → Pages**, escolha a branch e a pasta raiz e salve. O endereço publicado aparece nessa mesma seção. Também pode ser publicado em outro serviço de hospedagem estática.
 
----
+## Acessibilidade incluída
 
-## 🚀 Tecnologias Utilizadas
+- Idioma da página declarado em português brasileiro, link para pular ao conteúdo e títulos estruturados.
+- Navegação por teclado no mapa (Tab, Enter e Espaço) e alternativa por seletor/lista de estados.
+- Nome acessível nos estados do SVG, foco visível, layout responsivo e suporte à preferência por movimento reduzido.
+- Artigos com linguagem direta, estrutura semântica e links para fontes oficiais.
 
-- **HTML5**
-- **CSS3**
-- **JavaScript (Vanilla)**
-- **SVG (Scalable Vector Graphics)**
+## Fontes e dados
 
----
+As informações populacionais existentes no conjunto inicial de dados foram mantidas em formato resumido; consulte o IBGE para valores e atualizações oficiais. As referências dos textos temáticos estão listadas em cada página.
 
-## 🎯 Funcionalidades Implementadas
-
-- ✅ Mapa do Brasil renderizado em SVG  
-- ✅ Hover nos estados (mudança de cor)  
-- ✅ Zoom ao clicar em um estado  
-- ✅ Eventos e classes manipuladas via JavaScript  
-
----
-
-
-## 📂 Estrutura do Projeto
-
-```text
-Mapa-Interativo/
-├─ index.html            # Estrutura principal da página
-├─ style.css             # Estilos (hover, transições, zoom)
-├─ script.js             # Lógica de interação (clique/hover/zoom)
-```
-## 🛠️ Como Executar
-
-1. Clone o repositório:
-
-```bash
-git clone https://github.com/natanhnrqe/Mapa-Interativo.git
-```
-2. Entre na pasta:
-
-**cd Mapa-Interativo**
-
-- Abra o index.html no navegador.
-
-- Dica: se estiver usando VS Code, pode rodar com a extensão Live Server para facilitar.
-
----
-
-## 🔄 Próximas Etapas
-
-Centralizar o zoom no estado selecionado
-
-Adicionar tooltip/pop-up com nome do estado
-
-Adicionar painel lateral com informações
-
-Criar estrutura de dados por estado (JSON)
-
-Melhorar animações e transições
-
+- [IBGE — Cidades e Estados](https://www.ibge.gov.br/cidades-e-estados.html)
+- [Lei Brasileira de Inclusão — Lei nº 13.146/2015](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm)
+- [W3C WAI — WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/)
